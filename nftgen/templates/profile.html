@@ -1,0 +1,397 @@
+{% load static %}
+
+<!doctype html>
+<html class="h-100" lang="en">
+
+  <head>
+      <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <meta name="description" content="A well made and handcrafted Bootstrap 5 template">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="img/favicon.png">
+  <meta name="author" content="Holger Koenemann">
+  <meta name="generator" content="Eleventy v2.0.0">
+  <meta name="HandheldFriendly" content="true">
+  <title>Profile</title>
+  <style>
+    .navbar {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: black;
+    }
+    
+    body {
+      padding-top: 60px;
+      background-image: url('/static/images/profile_bg.jpg');
+      background-repeat: repeat-y;
+      background-size: cover;
+    }
+
+    #profilepic {
+      object-fit: cover !important;
+    }
+
+    #loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: none;
+}
+
+#loader img {
+  display: block;
+  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.filter-button
+{
+    font-size: 18px !important;
+    border: 1px solid white !important;
+    border-radius: 5px;
+    text-align: center;
+    color: white !important;
+    margin-bottom: 30px;
+}
+.filter-button:hover
+{
+    text-align: center;
+    color: black !important;
+    background-color: white !important;
+}
+.btn-default:active .filter-button:active
+{
+    color: black !important;
+    background-color: white !important;
+}
+
+.port-image
+{
+    width: 100%;
+}
+
+.gallery_product
+{
+    margin-bottom: 30px;
+}
+
+.profilepic:hover {
+  cursor: pointer;
+}
+
+hr {
+  margin-top: 1% !important;
+}
+
+.frosted-glass {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.updatebtn {
+  margin-left: 5% !important;
+}
+
+.updatebtn:hover {
+  background-color: white !important;
+}
+
+.newcollectionbtn:hover {
+  background-color: white !important;
+}
+
+.img-responsive {
+  width: 365px;
+  height: 365px;
+  object-fit: contain;
+}
+
+.img-responsive:hover {
+  cursor: pointer;
+}
+
+#collection_img:hover 
+{
+    cursor: pointer;
+}
+
+#previewimg {
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
+}
+
+figcaption {
+      color:white !important;
+      font-weight: bolder;
+      font-size: large !important;
+    }
+
+    .active {
+      background-color: white !important;
+      color: black !important;
+    }
+
+  </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/theme.min.css' %}">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </head>
+  <script type="text/javascript" src="{% static 'js/web3.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/create_nftcollection.js' %}"></script>
+  <script>
+
+  $(document).ready(function(){
+    $(".filter").not('.'+'art').hide('3000');
+    $('.filter').filter('.'+'art').show('3000');
+
+$(".filter-button").click(function(){
+  var divs = document.querySelectorAll("[id^='display_collections']");
+  // Set hidden property to true for all divs
+  divs.forEach(function(div) {
+    div.hidden = false;
+  });
+
+  divs_nfts = document.querySelectorAll("[id^='display_nfts']");
+  // Set hidden property to true for all divs
+  divs_nfts.forEach(function(div) {
+    div.hidden = false;
+  });
+
+    var buttons = document.querySelectorAll('.filter-button');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('active');
+    }
+    this.classList.add('active');
+    var value = $(this).attr('data-filter');
+        $(".filter").not('.'+value).hide('3000');
+        $('.filter').filter('.'+value).show('3000');
+});
+
+});
+
+    const changeimg = (e) =>
+    {
+        const img = document.getElementById('profilepic').files[0]
+        const bgUrl = URL.createObjectURL(img)
+        document.getElementById('profpic').src = bgUrl
+    }
+
+    const changelogo = (e) =>
+    {
+        const img = document.getElementById('collection_img').files[0]
+        const bgUrl = URL.createObjectURL(img)
+        document.getElementById('previewimg').src = bgUrl
+    }
+  </script>
+
+
+  <body class="w-100 bg-black" data-bs-spy="scroll" data-bs-target="#navScroll">
+
+    <nav id="navScroll" class="navbar navbar-dark bg-black fixed-top" tabindex="0">
+      <div class="container">
+        <a class="navbar-brand mx-auto mb-2 mb-lg-0 list-group list-group-horizontal" href="{% url 'profile' %}">
+          <img src="{% static 'images/symbol.png' %}" class="mr-1 mt-1" 
+                  style="height: 35px;">
+          <span class="ms-md-1 mt-1 fw-bolder me-md-5">Profile</span>
+        </a>
+  
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 list-group list-group-horizontal">
+          <li class="nav-item">
+            <a class="nav-link fs-5" href="{% url 'landing' %}" aria-label="Homepage">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fs-5" href="" aria-label="A sample content page">
+              Help
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link fs-5" href="{% url 'logout' %}" aria-label="A system message page">
+              Logout
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link fs-5" href="{% url 'login' %}" aria-label="A system message page">
+              Login
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+        
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+          <a class="nav-link fs-5 dropdown-toggle" type="button" id="btnDropdownDemo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          style="color: grey;">
+            {{request.user.email}}
+          </a>
+        
+          <div class="dropdown-menu" aria-labelledby="btnDropdownDemo"
+          style="color:white; background-color: black;">
+            <a type="button" href="{% url 'artgen' %}" class="dropdown-item nav-item"
+            style="color:white; background-color: black; text-decoration: none;">Digital Art Generator</a>
+            <a type="button" class="dropdown-item" href="{% url 'nftgen' %}"
+            style="color:white; background-color: black; text-decoration: none;">NFT Generator</a>
+            <a type="button" class="dropdown-item nav-item" href="{% url 'profile' %}"
+            style="color:white; background-color: black; text-decoration: none;">Profile</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container my-2 text-black frosted-glass mb-4" style="margin-top: 4% !important;">
+      <div class="row">
+        <!-- Left Section -->
+        <div class="col-2 mt-2">
+          <form class="row" method="post" id="artgenform" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="profilepic">
+              {% if user.profile %}
+                <img id="profpic" src="{{user.profile.profile_pic.url}}" class="rounded-circle profilepic" style="width: 160px; height: 160px;">
+              {% else %}
+                <img id="profpic" src="/static/images/default_profile_pic.png" class="rounded-circle profilepic" style="width: 160px; height: 160px;">
+              {% endif %}
+            </label>
+            <input name="profilepic" hidden type="file" class="form-control form-control-md" 
+                  id="profilepic" aria-describedby="emailHelp" accept="image/*" onChange="changeimg()">
+              <button type="submit" class="btn btn-white btn-lg mt-3 updatebtn"
+              style="margin-bottom: 0px;" name="updateprofile">Update Profile</button>
+          </form>
+        </div>
+
+        <div class="col-4 mt-3">
+          <h4 class="font-weight-bold">Public Address</h4>
+          <p>{{ user.username }}</p>
+          <h4 class="font-weight-bold">Email</h4>
+          <p>{{ user.email }}</p>
+        </div>
+    
+        <!-- Middle Section -->
+        <div class="col-4 mt-2">
+          <h4 class="font-weight-bold">Stats</h4>
+          <p style="font-size: 94%; margin-bottom: 5px;">Art Generated : {{ digital_art | length}}</p>
+          <hr style="border: gray solid 1px;">
+          <p style="font-size: 94%; margin-bottom: 5px;">NFTs Generated : {{ nfts | length }}</p>
+          <hr style="border: gray solid 1px;">
+          <p style="font-size: 94%; margin-bottom: 5px;">NFT Collections : {{ nft_collections | length }}</p>
+          <hr style="border: gray solid 1px;">
+          <button type="button" class="btn btn-white btn-lg mb-3 newcollectionbtn"
+              style="margin-bottom: 0px;" data-toggle="modal" data-target="#newCollectionModal">Create NFT Collection</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div align="center">
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button class="btn btn-default filter-button active" data-filter="art">Generated Art</button>
+            <button class="btn btn-default filter-button" data-filter="collections">NFT Collections</button>
+            <button class="btn btn-default filter-button" data-filter="nfts">Generated NFTs</button>
+          </div>
+        </div>
+      <br/>
+          
+          {% for art in digital_art %}
+          <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter art">
+            <a href="{% url 'art' id=art.id %}">
+            <img src="{{art.gen_image.url}}" class="img-responsive">
+            </a>
+            <figcaption class="figure-caption text-justified"><p>{{art.prompt}}</p></figcaption>
+          </div>
+          {% endfor %}
+        
+          {% for collection in nft_collections %}
+          <div hidden class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter collections"
+          id="display_collections">
+            <a href="https://testnets.opensea.io/assets/goerli/{{ collection.contract_address|add:'/' }}" target="_blank">
+              <img src="{{collection.logo.url}}" class="img-responsive">
+            </a>
+            <figcaption class="figure-caption text-justified"><p>{{collection.name}} ({{collection.symbol}})</p></figcaption>
+          </div>
+          {% endfor %}
+
+          {% for nft in nfts %}
+          <div hidden class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter nfts"
+          id="display_nfts">
+            <a href="https://testnets.opensea.io/assets/goerli/{{ nft.contract_address |add:'/' }}{{ nft.token_id }}" target="_blank">
+              <img src="{{nft.image_url}}" class="img-responsive">
+            </a>
+            <figcaption class="figure-caption text-justified"><p>{{nft.name}}</p></figcaption>
+          </div>
+          {% endfor %}
+
+          <!-- <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter sprinkle">
+              <img src="http://fakeimg.pl/365x365/" class="img-responsive">
+          </div> -->
+
+          <div id="loader">
+            <img src="{% static 'images/loader.gif' %}">
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="newCollectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Create New NFT Collection</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form id="collection-form" enctype="multipart/form-data">
+                  <div class="modal-body">
+                      <div class="form-group">
+                        <label for="collection_name">Name</label>
+                        <input type="text" required class="form-control" id="collection_name"
+                        name="collection_name" placeholder="Enter a name for your NFT collection">
+                      </div>
+                      <div class="form-group">
+                        <label for="collection_symbol">Symbol</label>
+                        <input type="text" required class="form-control" id="collection_symbol"
+                        name="collection_symbol" placeholder="Enter a symbol for your NFT collection">
+                      </div>
+                      <div class="form-group">
+                        <label for="collection_image" class="form-label">Logo</label>
+                        <br>
+                        <img src="{% static 'images/sample_collection.jpg' %}" id = "previewimg"
+                        style="margin-bottom: 4%;">
+                        <input name="collection_img" type="file" class="form-control form-control-md" 
+                        id="collection_img" aria-describedby="emailHelp" accept="image/*"
+                        onChange="changelogo()">
+                        <div id="emailHelp" class="form-text">Please upload a logo for your collection</div>
+                      </div>
+                  </div>
+                </form>
+                  <div class="modal-footer">
+                    <button type="submit"
+                    name="newcollection" id="newcollection" 
+                    class="btn btn-primary" onclick="create_collection()">Create</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</section>
+  </body>
+</html>
